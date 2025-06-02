@@ -43,6 +43,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\EstadoConsultas.cs" />
+    <Compile Include="Models\Consultorio.cs" />
+    <Compile Include="Models\Especialidad.cs" />
+    <Compile Include="Models\Medico.cs" />
+    <Compile Include="Models\Paciente.cs" />
+    <Compile Include="Models\Turno.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
