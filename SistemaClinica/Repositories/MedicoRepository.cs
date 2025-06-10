@@ -3,6 +3,7 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using SistemaClinica.Data;
+using SistemaClinica.Mappers;
 
 namespace SistemaClinica.Repositories
 {
@@ -24,6 +25,27 @@ namespace SistemaClinica.Repositories
             }
         }
 
+        public Medico ObtenerPorId(int id)
+        {
+            using (var connection = DatabaseConnection.GetConnection())
+            {
+                connection.Open();
+                string query = "SELECT * FROM medicos WHERE IdMedico = @Id";
+                using (var cmd = new MySqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("Id", id);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return MedicoMapper.Mapear(reader);
+                        }
+                    }
+                }
+                 
+            }
+            return null;
+        }
         public List<Medico> ObtenerTodos()
         {
             var medicos = new List<Medico>();
@@ -35,14 +57,7 @@ namespace SistemaClinica.Repositories
                 {
                     while (reader.Read())
                     {
-                        medicos.Add(new Medico
-                        {
-                            IdMedico = reader.GetInt32("IdMedico"),
-                            Nombre = reader.GetString("Nombre"),
-                            Apellido = reader.GetString("Apellido"),
-                            Matricula = reader.GetString("Matricula"),
-                            Especialidad = reader.GetString("Especialidad")
-                        });
+                        medicos.Add(MedicoMapper.Mapear(reader));
                     }
                 }
             }

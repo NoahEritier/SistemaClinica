@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using SistemaClinica.Data;
 using SistemaClinica.Enums;
+using SistemaClinica.Mappers;
 
 namespace SistemaClinica.Repositories
 {
@@ -43,6 +44,27 @@ namespace SistemaClinica.Repositories
             }
         }
 
+        public Paciente ObtenerPorId(int id)
+        {
+            using (var connection = DatabaseConnection.GetConnection())
+            {
+                connection.Open();
+                string query = "SELECT * FROM Pacientes WHERE IdPaciente = @Id";
+                using (var cmd = new MySqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return PacienteMapper.Mapear(reader);
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
         public List<Paciente> ObtenerTodos()
         {
             var pacientes = new List<Paciente>();
@@ -54,36 +76,8 @@ namespace SistemaClinica.Repositories
                 {
                     while (reader.Read())
                     {
-                        TipoPaciente tipo = (TipoPaciente)Enum.Parse(typeof(TipoPaciente), reader.GetString("TipoPaciente"));
-
-                        if (tipo == TipoPaciente.ConObraSocial)
-                        {
-                            pacientes.Add(new PacienteObraSocial
-                            {
-                                IdPaciente = reader.GetInt32("IdPaciente"),
-                                Nombre = reader.GetString("Nombre"),
-                                Apellido = reader.GetString("Apellido"),
-                                FechaNacimiento = reader.GetDateTime("FechaNacimiento"),
-                                DNI = reader.GetString("DNI"),
-                                NombreObraSocial = reader.GetString("NombreObraSocial"),
-                                NumeroDeAfiliado = reader["NumeroDeAfiliado"] as string,
-                                UltimoReciboDeSueldo = reader["UltimoReciboDeSueldo"] as string
-                            });
-                        }
-                        else if (tipo == TipoPaciente.SinObraSocial)
-                        {
-                            pacientes.Add(new PacienteSinObraSocial
-                            {
-                                IdPaciente = reader.GetInt32("IdPaciente"),
-                                Nombre = reader.GetString("Nombre"),
-                                Apellido = reader.GetString("Apellido"),
-                                FechaNacimiento = reader.GetDateTime("FechaNacimiento"),
-                                DNI = reader.GetString("DNI"),
-                                NumeroDeCarnet = reader["NumeroDeCarnet"] as string
-                            });
-                        }
+                        pacientes.Add(PacienteMapper.Mapear(reader));
                     }
-
                 }
             }
             return pacientes;
