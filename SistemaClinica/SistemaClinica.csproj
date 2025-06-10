@@ -98,6 +98,7 @@
     <Compile Include="Data\Configuration.cs" />
     <Compile Include="Data\DatabaseConnection.cs" />
     <Compile Include="Enums\EstadoConsultas.cs" />
+    <Compile Include="Enums\TipoPaciente.cs" />
     <Compile Include="Models\Consultorio.cs" />
     <Compile Include="Models\Especialidad.cs" />
     <Compile Include="Models\Medico.cs" />
@@ -105,6 +106,8 @@
     <Compile Include="Models\Turno.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\MedicoRepository.cs" />
+    <Compile Include="Repositories\PacienteRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
