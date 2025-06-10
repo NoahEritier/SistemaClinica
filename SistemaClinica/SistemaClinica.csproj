@@ -99,6 +99,8 @@
     <Compile Include="Data\DatabaseConnection.cs" />
     <Compile Include="Enums\EstadoConsultas.cs" />
     <Compile Include="Enums\TipoPaciente.cs" />
+    <Compile Include="Mappers\MedicoMapper.cs" />
+    <Compile Include="Mappers\PacienteMapper.cs" />
     <Compile Include="Models\Consultorio.cs" />
     <Compile Include="Models\Especialidad.cs" />
     <Compile Include="Models\Medico.cs" />
