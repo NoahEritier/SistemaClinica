@@ -101,11 +101,14 @@
     <Compile Include="Enums\TipoPaciente.cs" />
     <Compile Include="Mappers\MedicoMapper.cs" />
     <Compile Include="Mappers\PacienteMapper.cs" />
+    <Compile Include="MedicoUtils.cs" />
+    <Compile Include="MenuUtils.cs" />
     <Compile Include="Models\Consultorio.cs" />
     <Compile Include="Models\Especialidad.cs" />
     <Compile Include="Models\Medico.cs" />
     <Compile Include="Models\Paciente.cs" />
     <Compile Include="Models\Turno.cs" />
+    <Compile Include="PacienteUtils.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\MedicoRepository.cs" />
