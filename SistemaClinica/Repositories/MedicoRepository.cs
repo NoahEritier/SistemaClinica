@@ -29,7 +29,6 @@ namespace SistemaClinica.Repositories
         {
             using (var connection = DatabaseConnection.GetConnection())
             {
-                connection.Open();
                 string query = "SELECT * FROM medicos WHERE IdMedico = @Id";
                 using (var cmd = new MySqlCommand(query, connection))
                 {

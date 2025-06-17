@@ -12,6 +12,7 @@ namespace SistemaClinica
             MenuUtils menuUtils = new MenuUtils();
             PacienteUtils pacienteUtils = new PacienteUtils();
             MedicoUtils medicoUtils = new MedicoUtils();
+            EspecialidadUtils especialidadUtils = new EspecialidadUtils();
             int opcion;
             do
             {
@@ -43,6 +44,18 @@ namespace SistemaClinica
                         break;
                     case 8:
                         medicoUtils.EliminarMedico();
+                        break;
+                    case 9:
+                        especialidadUtils.AgregarEspecialidad();
+                        break;
+                    case 10:
+                        especialidadUtils.ListarEspecialidades();
+                        break;
+                    case 11:
+                        especialidadUtils.ActualizarEspecialidad();
+                        break;
+                    case 12:
+                        especialidadUtils.EliminarEspecialidad();
                         break;
                     case 0:
                         Console.WriteLine("Saliendo...");

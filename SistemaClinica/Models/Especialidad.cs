@@ -10,5 +10,6 @@ namespace SistemaClinica.Models
     {
         public int IdEspecialidad { get; set; }
         public string NombreEspecialidad { get; set; }
+        public int? IdEspecialidadPadre { get; set; } // null si es Especialidad Principal
     }
 }

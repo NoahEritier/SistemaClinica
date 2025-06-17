@@ -48,7 +48,6 @@ namespace SistemaClinica.Repositories
         {
             using (var connection = DatabaseConnection.GetConnection())
             {
-                connection.Open();
                 string query = "SELECT * FROM Pacientes WHERE IdPaciente = @Id";
                 using (var cmd = new MySqlCommand(query, connection))
                 {
