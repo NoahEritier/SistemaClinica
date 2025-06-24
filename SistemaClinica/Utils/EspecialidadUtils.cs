@@ -6,65 +6,157 @@ using System.Threading.Tasks;
 using SistemaClinica.Models;
 using SistemaClinica.Repositories;
 
-public class EspecialidadUtils
+namespace SistemaClinica
 {
-    EspecialidadRepository Repository { get; set; }
-    public EspecialidadUtils() { Repository = new EspecialidadRepository(); }
-    public void ListarEspecialidades()
+    public class EspecialidadUtils
     {
-        var especialidades = Repository.ObtenerTodas();
-        foreach (var e in especialidades)
-        {
-            Console.WriteLine($"ID: {e.IdEspecialidad}, Nombre: {e.NombreEspecialidad}, PadreID: {e.IdEspecialidadPadre?.ToString() ?? "Ninguno"}");
-        }
-    }
+        private EspecialidadRepository Repository { get; set; }
+        private MenuUtils MenuUtils { get; set; }
 
-    public void AgregarEspecialidad()
-    {
-        Console.Write("Ingrese nombre de la especialidad: ");
-        string nombre = Console.ReadLine();
-
-        Console.Write("Ingrese ID de especialidad padre (o vacío si no tiene): ");
-        string padreInput = Console.ReadLine();
-        int? idPadre = string.IsNullOrEmpty(padreInput) ? (int?)null : int.Parse(padreInput);
-        var especialidad = new Especialidad
-        {
-            NombreEspecialidad = nombre,
-            IdEspecialidadPadre = idPadre
-        };
-        Repository.Agregar(especialidad);
-        Console.WriteLine("Especialidad agregada.");
-    }
-
-    public void ActualizarEspecialidad()
-    {
-        Console.Write("Ingrese ID de la especialidad a actualizar: ");
-        int id = int.Parse(Console.ReadLine());
-
-        var especialidad = Repository.ObtenerPorId(id);
-        if (especialidad == null)
-        {
-            Console.WriteLine("Especialidad no encontrada.");
-            return;
+        public EspecialidadUtils() 
+        { 
+            Repository = new EspecialidadRepository();
+            MenuUtils = new MenuUtils();
         }
 
-        Console.Write("Ingrese nuevo nombre de la especialidad: ");
-        especialidad.NombreEspecialidad = Console.ReadLine();
+        public void ListarEspecialidades()
+        {
+            MenuUtils.LimpiarPantalla();
+            Console.WriteLine("╔══════════════════════════════════════════════════════════════╗");
+            Console.WriteLine("║                  LISTAR ESPECIALIDADES                     ║");
+            Console.WriteLine("╚══════════════════════════════════════════════════════════════╝\n");
 
-        Console.Write("Ingrese nuevo ID de especialidad padre (o vacío si no tiene): ");
-        string padreInput = Console.ReadLine();
-        especialidad.IdEspecialidadPadre = string.IsNullOrEmpty(padreInput) ? (int?)null : int.Parse(padreInput);
+            try
+            {
+                var especialidades = Repository.ObtenerTodas();
 
-        Repository.Actualizar(especialidad);
-        Console.WriteLine("Especialidad actualizada.");
-    }
+                if (especialidades.Count == 0)
+                {
+                    Console.WriteLine("No hay especialidades registradas.");
+                }
+                else
+                {
+                    foreach (var e in especialidades)
+                    {
+                        Console.WriteLine($"ID: {e.IdEspecialidad} - Nombre: {e.NombreEspecialidad} - PadreID: {e.IdEspecialidadPadre?.ToString() ?? "Ninguno"}");
+                        Console.WriteLine();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MenuUtils.MostrarMensaje($"Error al listar especialidades: {ex.Message}", true);
+            }
 
-    public void EliminarEspecialidad()
-    {
-        Console.Write("Ingrese ID de la especialidad a eliminar: ");
-        int id = int.Parse(Console.ReadLine());
-        Repository.Eliminar(id);
-        Console.WriteLine("Especialidad eliminada.");
+            Console.WriteLine("\nPresiona cualquier tecla para continuar...");
+            Console.ReadKey();
+        }
+
+        public void AgregarEspecialidad()
+        {
+            MenuUtils.LimpiarPantalla();
+            Console.WriteLine("╔══════════════════════════════════════════════════════════════╗");
+            Console.WriteLine("║                 AGREGAR ESPECIALIDAD                       ║");
+            Console.WriteLine("╚══════════════════════════════════════════════════════════════╝\n");
+
+            try
+            {
+                Console.Write("Ingrese nombre de la especialidad: ");
+                string nombre = Console.ReadLine();
+
+                Console.Write("Ingrese ID de especialidad padre (o vacío si no tiene): ");
+                string padreInput = Console.ReadLine();
+                int? idPadre = string.IsNullOrEmpty(padreInput) ? (int?)null : int.Parse(padreInput);
+
+                var especialidad = new Especialidad
+                {
+                    NombreEspecialidad = nombre,
+                    IdEspecialidadPadre = idPadre
+                };
+
+                Repository.Agregar(especialidad);
+                MenuUtils.MostrarMensaje("Especialidad agregada con éxito.");
+            }
+            catch (Exception ex)
+            {
+                MenuUtils.MostrarMensaje($"Error al agregar especialidad: {ex.Message}", true);
+            }
+        }
+
+        public void ActualizarEspecialidad()
+        {
+            MenuUtils.LimpiarPantalla();
+            Console.WriteLine("╔══════════════════════════════════════════════════════════════╗");
+            Console.WriteLine("║               ACTUALIZAR ESPECIALIDAD                      ║");
+            Console.WriteLine("╚══════════════════════════════════════════════════════════════╝\n");
+
+            try
+            {
+                Console.Write("Ingrese ID de la especialidad a actualizar: ");
+                int id = int.Parse(Console.ReadLine());
+
+                var especialidad = Repository.ObtenerPorId(id);
+                if (especialidad == null)
+                {
+                    MenuUtils.MostrarMensaje("Especialidad no encontrada.", true);
+                    return;
+                }
+
+                Console.WriteLine($"\nActualizando especialidad: {especialidad.NombreEspecialidad}\n");
+
+                Console.Write("Ingrese nuevo nombre de la especialidad: ");
+                especialidad.NombreEspecialidad = Console.ReadLine();
+
+                Console.Write("Ingrese nuevo ID de especialidad padre (o vacío si no tiene): ");
+                string padreInput = Console.ReadLine();
+                especialidad.IdEspecialidadPadre = string.IsNullOrEmpty(padreInput) ? (int?)null : int.Parse(padreInput);
+
+                Repository.Actualizar(especialidad);
+                MenuUtils.MostrarMensaje("Especialidad actualizada con éxito.");
+            }
+            catch (Exception ex)
+            {
+                MenuUtils.MostrarMensaje($"Error al actualizar especialidad: {ex.Message}", true);
+            }
+        }
+
+        public void EliminarEspecialidad()
+        {
+            MenuUtils.LimpiarPantalla();
+            Console.WriteLine("╔══════════════════════════════════════════════════════════════╗");
+            Console.WriteLine("║                ELIMINAR ESPECIALIDAD                       ║");
+            Console.WriteLine("╚══════════════════════════════════════════════════════════════╝\n");
+
+            try
+            {
+                Console.Write("Ingrese ID de la especialidad a eliminar: ");
+                int id = int.Parse(Console.ReadLine());
+
+                var especialidad = Repository.ObtenerPorId(id);
+                if (especialidad == null)
+                {
+                    MenuUtils.MostrarMensaje("Especialidad no encontrada", true);
+                    return;
+                }
+
+                Console.WriteLine($"\n¿Estás seguro de que quieres eliminar la especialidad '{especialidad.NombreEspecialidad}'? (s/n): ");
+                string confirmacion = Console.ReadLine();
+
+                if (confirmacion.ToLower() == "s")
+                {
+                    Repository.Eliminar(id);
+                    MenuUtils.MostrarMensaje("Especialidad eliminada con éxito.");
+                }
+                else
+                {
+                    MenuUtils.MostrarMensaje("Operación cancelada.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MenuUtils.MostrarMensaje($"Error al eliminar especialidad: {ex.Message}", true);
+            }
+        }
     }
 }
 

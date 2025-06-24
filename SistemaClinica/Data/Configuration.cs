@@ -8,6 +8,6 @@ namespace SistemaClinica.Data
 {
     public static class Configuration
     {
-        public static string ConnectionString => "server=localhost;database=sistemaclinica;user=root;password=4Y2y3p4e!";
+        public static string ConnectionString => "server=localhost;database=sistemaclinica;user=root;password=41054105";
     }
 }
